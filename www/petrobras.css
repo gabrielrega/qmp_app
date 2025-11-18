@@ -1,0 +1,45 @@
+/* petrobras.css */
+
+body {
+  background-color: #f4f4f4 !important;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif !important;
+  color: #003f2d !important;
+}
+
+h1, h2, h3, h4 {
+  color: #007f3e !important;
+  font-weight: bold !important;
+}
+
+/* Botões */
+.btn, .btn-primary {
+  background-color: #007f3e !important;
+  border-color: #005f2e !important;
+  color: white !important;
+}
+
+.btn:hover, .btn-primary:hover {
+  background-color: #005f2e !important;
+  border-color: #004020 !important;
+}
+
+/* Painéis */
+.panel, .well {
+  border-color: #007f3e !important;
+}
+
+.panel-heading {
+  background-color: #007f3e !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+/* Tabelas */
+.table th {
+  background-color: #e6f2ec !important;
+  color: #003f2d !important;
+}
+
+.table td {
+  background-color: #ffffff !important;
+}
