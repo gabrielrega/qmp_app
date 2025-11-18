@@ -140,10 +140,93 @@ ui <- fluidPage(
       downloadButton("download", "Baixar resultados CSV")
     ),
     mainPanel(
-      h3("Painéis de projeção"),
-      plotOutput("plots", height = "900px"),
-      h4("Tabela resumida (início)"),
-      tableOutput("table_head")
+      tabsetPanel(
+        tabPanel("Instruções",
+          h3("📘 Guia de Uso do Simulador QPM"),
+          
+          h4("O que é o QPM?"),
+          p("O Quarterly Projection Model (QPM) é um modelo macroeconômico semi-estrutural do tipo Novo-Keynesiano,
+            utilizado por bancos centrais para análise de política monetária e construção de cenários de projeção."),
+          
+          hr(),
+          h4("🎯 Como usar este simulador"),
+          tags$ol(
+            tags$li(strong("Configure os parâmetros"), " na barra lateral esquerda"),
+            tags$li(strong("Defina o estado inicial"), " da economia (hiato, inflação, juros, câmbio)"),
+            tags$li(strong("Opcionalmente, adicione choques"), " pontuais ou séries exógenas"),
+            tags$li(strong("Clique em 'Rodar simulação'"), " para gerar as projeções"),
+            tags$li(strong("Analise os gráficos"), " na aba 'Simulação'"),
+            tags$li(strong("Baixe os resultados"), " em formato CSV se necessário")
+          ),
+          
+          hr(),
+          h4("📊 Parâmetros Estruturais do Modelo"),
+          
+          tags$h5("Curva de Phillips (Inflação)"),
+          tags$ul(
+            tags$li(strong("β (beta):"), " Peso das expectativas futuras na formação da inflação. Valores próximos de 1 indicam que a inflação é mais forward-looking."),
+            tags$li(strong("κ (kappa):"), " Sensibilidade da inflação ao hiato do produto. Valores maiores significam que pressões de demanda afetam mais a inflação.")
+          ),
+          
+          tags$h5("Curva IS (Demanda Agregada)"),
+          tags$ul(
+            tags$li(strong("φ (phi):"), " Sensibilidade do hiato do produto à taxa de juros real. Valores maiores indicam que a política monetária é mais eficaz."),
+            tags$li(strong("γ (gamma):"), " Inércia do hiato do produto. Captura a persistência de desvios do produto em relação ao potencial.")
+          ),
+          
+          tags$h5("Regra de Taylor (Política Monetária)"),
+          tags$ul(
+            tags$li(strong("ρ (rho):"), " Suavização da taxa de juros. Bancos centrais ajustam juros gradualmente (valores típicos: 0.6-0.8)."),
+            tags$li(strong("απ (alpha_pi):"), " Resposta à inflação. Valores > 1 indicam política ativa (Princípio de Taylor)."),
+            tags$li(strong("αy (alpha_y):"), " Resposta ao hiato do produto. Captura o mandato dual do BC."),
+            tags$li(strong("r*:"), " Taxa neutra de juros real, compatível com inflação na meta e hiato zero."),
+            tags$li(strong("π*:"), " Meta de inflação do banco central.")
+          ),
+          
+          tags$h5("Câmbio Real"),
+          tags$ul(
+            tags$li(strong("ψ (psi):"), " Sensibilidade do câmbio ao diferencial de juros (paridade descoberta de juros)."),
+            tags$li(strong("θ (theta):"), " Persistência do câmbio real. Valores altos indicam ajuste lento ao equilíbrio.")
+          ),
+          
+          hr(),
+          h4("🧠 Formação de Expectativas"),
+          tags$ul(
+            tags$li(strong("Adaptativa:"), " Agentes esperam que a inflação futura seja igual à inflação corrente."),
+            tags$li(strong("Naive:"), " Similar à adaptativa (expectativa igual ao valor atual)."),
+            tags$li(strong("Híbrida:"), " Combinação ponderada entre expectativa adaptativa (peso λ) e a meta de inflação (peso 1-λ).")
+          ),
+          
+          hr(),
+          h4("💥 Choques e Cenários"),
+          p("Você pode simular eventos específicos de duas formas:"),
+          tags$ul(
+            tags$li(strong("Choques pontuais:"), " Adicione um choque único em um período específico (ex: choque de oferta em t=10)."),
+            tags$li(strong("Séries exógenas:"), " Faça upload de arquivos CSV com trajetórias completas para PIB potencial, r* ou i*.")
+          ),
+          
+          hr(),
+          h4("📈 Interpretação dos Gráficos"),
+          tags$ul(
+            tags$li(strong("PIB Potencial vs Absoluto:"), " Compara a trajetória potencial com a efetiva."),
+            tags$li(strong("Hiato do Produto:"), " Diferença percentual entre PIB efetivo e potencial. Valores positivos indicam economia aquecida."),
+            tags$li(strong("Inflação:"), " Trajetória da inflação com linha tracejada na meta."),
+            tags$li(strong("Taxa de Juros Nominal:"), " Taxa Selic projetada pelo modelo."),
+            tags$li(strong("Câmbio Real:"), " Índice de câmbio real (valores maiores = depreciação).")
+          ),
+          
+          hr(),
+          p(em("Nota: Este é um modelo simplificado para fins pedagógicos e de análise de cenários. 
+               Para decisões de política monetária real, modelos mais complexos com expectativas racionais são necessários."))
+        ),
+        
+        tabPanel("Simulação",
+          h3("Painéis de projeção"),
+          plotOutput("plots", height = "900px"),
+          h4("Tabela resumida (início)"),
+          tableOutput("table_head")
+        )
+      )
     )
   )
 )
