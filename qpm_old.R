@@ -1,4 +1,4 @@
-# app.R - QPM v2 com Dashboard Reestruturado
+# app.R
 library(shiny)
 library(dplyr)
 library(tidyr)
@@ -83,27 +83,6 @@ ui <- fluidPage(
   titlePanel("QPM discreto – Projeções e cenários (Shiny)"),
   sidebarLayout(
     sidebarPanel(
-      wellPanel(
-        style = "background-color: #f8f9fa; border: 2px solid #007bff;",
-        h4("🌍 Calibrações de Países", style = "color: #007bff; margin-top: 0;"),
-        selectInput("preset_country", 
-                    "Selecione um país:",
-                    choices = c(
-                      "Personalizado" = "custom",
-                      "Brasil 🇧🇷" = "Brasil",
-                      "Chile 🇨🇱" = "Chile",
-                      "Peru 🇵🇪" = "Peru",
-                      "Colômbia 🇨🇴" = "Colombia",
-                      "México 🇲🇽" = "Mexico",
-                      "EUA 🇺🇸" = "EUA"
-                    ),
-                    selected = "custom"),
-        actionButton("load_preset", "Carregar Preset", 
-                     class = "btn-info btn-block"),
-        tags$small("Carrega parâmetros calibrados da literatura acadêmica")
-      ),
-      
-      hr(),
       h4("Parâmetros principais"),
       numericInput("beta",     "β (peso forward na Phillips)", 0.7, 0, 1),
       numericInput("kappa",    "κ (sensibilidade da inflação ao hiato)", 0.3, 0, 5),
@@ -150,7 +129,7 @@ ui <- fluidPage(
       numericInput("shock_y_t",  "t (hiato)", NA),
       numericInput("shock_y_v",  "valor (pp) hiato", NA),
       numericInput("shock_pi_t", "t (inflação)", NA),
-      numericInput("shock_pi_v", "valor (pp) inflação)", NA),
+      numericInput("shock_pi_v", "valor (pp) inflação", NA),
       numericInput("shock_i_t",  "t (juros)", NA),
       numericInput("shock_i_v",  "valor (pp) juros", NA),
       numericInput("shock_q_t",  "t (câmbio)", NA),
@@ -242,71 +221,10 @@ ui <- fluidPage(
         ),
         
         tabPanel("Simulação",
-          h3("📈 Dashboard de Projeções"),
-          
-          # Métricas-chave
-          fluidRow(
-            column(3,
-              wellPanel(
-                style = "background-color: #e8f4f8; border-left: 4px solid #2c3e50;",
-                h4("Inflação Final", style = "margin-top: 0;"),
-                textOutput("metric_pi_final"),
-                tags$small("Convergência para meta")
-              )
-            ),
-            column(3,
-              wellPanel(
-                style = "background-color: #f0e8f8; border-left: 4px solid #8e44ad;",
-                h4("Taxa de Juros Final", style = "margin-top: 0;"),
-                textOutput("metric_i_final"),
-                tags$small("Valor no período final")
-              )
-            ),
-            column(3,
-              wellPanel(
-                style = "background-color: #e8f8e8; border-left: 4px solid #27ae60;",
-                h4("Hiato Médio", style = "margin-top: 0;"),
-                textOutput("metric_y_avg"),
-                tags$small("Média últimos 12 períodos")
-              )
-            ),
-            column(3,
-              wellPanel(
-                style = "background-color: #fff4e6; border-left: 4px solid #e67e22;",
-                h4("Câmbio Real Final", style = "margin-top: 0;"),
-                textOutput("metric_q_final"),
-                tags$small("Índice no período final")
-              )
-            )
-          ),
-          
-          hr(),
-          
-          # Gráficos principais
-          h4("🎯 Variáveis de Política Monetária"),
-          fluidRow(
-            column(6, plotOutput("plot_inflation", height = "350px")),
-            column(6, plotOutput("plot_interest", height = "350px"))
-          ),
-          
-          br(),
-          h4("📊 Atividade Econômica"),
-          fluidRow(
-            column(6, plotOutput("plot_output_gap", height = "350px")),
-            column(6, plotOutput("plot_gdp", height = "350px"))
-          ),
-          
-          br(),
-          h4("💱 Câmbio"),
-          fluidRow(
-            column(12, plotOutput("plot_exchange", height = "350px"))
-          ),
-          
-          hr(),
-          
-          # Tabela de projeções
-          h4("📋 Tabela de Projeções (Primeiros 12 períodos)"),
-          tableOutput("table_projections")
+          h3("Painéis de projeção"),
+          plotOutput("plots", height = "900px"),
+          h4("Tabela resumida (início)"),
+          tableOutput("table_head")
         )
       )
     )
@@ -317,39 +235,6 @@ ui <- fluidPage(
 # Server
 # ---------------------------
 server <- function(input, output, session) {
-  
-  # Carregar dados de países
-  countries_params <- read_csv("presets/countries_parameters.csv", show_col_types = FALSE)
-  
-  # Observer para carregar preset
-  observeEvent(input$load_preset, {
-    req(input$preset_country != "custom")
-    
-    country_data <- countries_params %>% 
-      filter(country == input$preset_country)
-    
-    if(nrow(country_data) > 0) {
-      # Atualizar todos os inputs
-      updateNumericInput(session, "beta", value = country_data$beta)
-      updateNumericInput(session, "kappa", value = country_data$kappa)
-      updateNumericInput(session, "phi", value = country_data$phi)
-      updateNumericInput(session, "gamma", value = country_data$gamma)
-      updateNumericInput(session, "rho", value = country_data$rho)
-      updateNumericInput(session, "alpha_pi", value = country_data$alpha_pi)
-      updateNumericInput(session, "alpha_y", value = country_data$alpha_y)
-      updateNumericInput(session, "r_star", value = country_data$r_star)
-      updateNumericInput(session, "pi_star", value = country_data$pi_star)
-      updateNumericInput(session, "psi", value = country_data$psi)
-      updateNumericInput(session, "theta", value = country_data$theta)
-      
-      # Feedback visual
-      showNotification(
-        paste0("✅ Parâmetros de ", input$preset_country, " carregados com sucesso!"),
-        type = "message",
-        duration = 3
-      )
-    }
-  })
   
   # Helpers para ler séries CSV ou criar exemplos
   read_series_or_example <- function(fileInput, T, default_value, growth = 0, name = "value") {
@@ -434,167 +319,60 @@ server <- function(input, output, session) {
     )
   }, ignoreInit = TRUE)
   
-  # Tema personalizado para gráficos
-  theme_qpm <- function() {
-    theme_minimal(base_size = 13) +
-      theme(
-        plot.title = element_text(face = "bold", size = 14, hjust = 0),
-        plot.subtitle = element_text(color = "#666666", size = 11),
-        panel.grid.minor = element_blank(),
-        panel.grid.major = element_line(color = "#e0e0e0", linewidth = 0.3),
-        legend.position = "top",
-        legend.title = element_blank(),
-        axis.text = element_text(color = "#333333"),
-        axis.title = element_text(face = "bold", color = "#333333")
-      )
-  }
-  
-  # Métricas-chave
-  output$metric_pi_final <- renderText({
-    req(sim_data())
-    sim <- sim_data()
-    final_val <- tail(sim$pi, 1)
-    target <- isolate(input$pi_star)
-    diff <- final_val - target
-    sprintf("%.2f%% (meta: %.1f%%, diff: %+.2f pp)", final_val, target, diff)
-  })
-  
-  output$metric_i_final <- renderText({
-    req(sim_data())
-    sim <- sim_data()
-    sprintf("%.2f%%", tail(sim$i, 1))
-  })
-  
-  output$metric_y_avg <- renderText({
-    req(sim_data())
-    sim <- sim_data()
-    last_12 <- tail(sim$y, 12)
-    sprintf("%.2f%%", mean(last_12))
-  })
-  
-  output$metric_q_final <- renderText({
-    req(sim_data())
-    sim <- sim_data()
-    sprintf("%.2f", tail(sim$q_abs, 1))
-  })
-  
-  # Gráfico: Inflação
-  output$plot_inflation <- renderPlot({
-    req(sim_data())
-    sim <- sim_data()
-    pi_target <- isolate(input$pi_star)
-    
-    ggplot(sim, aes(x = period, y = pi)) +
-      geom_ribbon(aes(ymin = pi_target - 1.5, ymax = pi_target + 1.5), 
-                  fill = "#3498db", alpha = 0.15) +
-      geom_hline(yintercept = pi_target, linetype = "dashed", 
-                 color = "#2c3e50", linewidth = 0.8) +
-      geom_line(color = "#e74c3c", linewidth = 1.3) +
-      geom_point(data = sim %>% filter(period %in% c(0, max(period))), 
-                 color = "#e74c3c", size = 3) +
-      labs(title = "Projeção da Inflação",
-           subtitle = "Área sombreada: banda de ±1.5pp da meta",
-           x = "Período", y = "Inflação (%)") +
-      theme_qpm()
-  })
-  
-  # Gráfico: Taxa de Juros
-  output$plot_interest <- renderPlot({
-    req(sim_data())
-    sim <- sim_data()
-    neutral_rate <- isolate(input$r_star + input$pi_star)
-    
-    ggplot(sim, aes(x = period, y = i)) +
-      geom_hline(yintercept = neutral_rate, linetype = "dashed", 
-                 color = "#95a5a6", linewidth = 0.8) +
-      geom_line(color = "#8e44ad", linewidth = 1.3) +
-      geom_point(data = sim %>% filter(period %in% c(0, max(period))), 
-                 color = "#8e44ad", size = 3) +
-      annotate("text", x = max(sim$period) * 0.85, y = neutral_rate, 
-               label = paste0("Taxa neutra: ", round(neutral_rate, 2), "%"), 
-               vjust = -0.5, color = "#7f8c8d", size = 3.5) +
-      labs(title = "Projeção da Taxa de Juros Nominal",
-           subtitle = "Linha tracejada: taxa neutra (r* + π*)",
-           x = "Período", y = "Taxa de Juros (%)") +
-      theme_qpm()
-  })
-  
-  # Gráfico: Hiato do Produto
-  output$plot_output_gap <- renderPlot({
+  # Plots
+  output$plots <- renderPlot({
     req(sim_data())
     sim <- sim_data()
     
-    ggplot(sim, aes(x = period, y = y)) +
-      geom_ribbon(aes(ymin = 0, ymax = y, fill = y > 0), alpha = 0.3) +
-      geom_hline(yintercept = 0, linetype = "solid", 
-                 color = "#2c3e50", linewidth = 0.6) +
-      geom_line(color = "#27ae60", linewidth = 1.3) +
-      scale_fill_manual(values = c("TRUE" = "#e74c3c", "FALSE" = "#3498db"), 
-                        guide = "none") +
+    # Painel 1: PIB potencial vs PIB absoluto
+    p1 <- ggplot(sim, aes(x = period)) +
+      geom_line(aes(y = PIB_pot, color = "PIB Potencial"), size = 1.2) +
+      geom_line(aes(y = PIB_abs, color = "PIB Absoluto"), size = 1.2) +
+      scale_color_manual(values = c("PIB Potencial" = "blue", "PIB Absoluto" = "red")) +
+      labs(title = "PIB Potencial vs PIB Absoluto",
+           x = "Período", y = "Valor (nível)", color = "") +
+      theme_minimal(base_size = 14)
+    
+    # Painel 2: Hiato do produto
+    p2 <- ggplot(sim, aes(x = period, y = y)) +
+      geom_line(color = "darkgreen", size = 1.2) +
+      geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
       labs(title = "Hiato do Produto",
-           subtitle = "Vermelho: economia aquecida | Azul: economia desaquecida",
-           x = "Período", y = "Hiato (%)") +
-      theme_qpm()
+           x = "Período", y = "Desvio (%)") +
+      theme_minimal(base_size = 14)
+    
+    # Painel 3: Inflação
+    p3 <- ggplot(sim, aes(x = period, y = pi)) +
+      geom_line(color = "firebrick", size = 1.2) +
+      geom_hline(yintercept = isolate(input$pi_star), linetype = "dashed", color = "black") +
+      labs(title = "Inflação (%)",
+           x = "Período", y = "Valor") +
+      theme_minimal(base_size = 14)
+    
+    # Painel 4: Taxa de juros nominal
+    p4 <- ggplot(sim, aes(x = period, y = i)) +
+      geom_line(color = "purple", size = 1.2) +
+      geom_hline(yintercept = isolate(input$r_star + input$pi_star),
+                 linetype = "dashed", color = "black") +
+      labs(title = "Taxa de Juros Nominal (%)",
+           x = "Período", y = "Valor") +
+      theme_minimal(base_size = 14)
+    
+    # Painel 5: Câmbio real absoluto
+    p5 <- ggplot(sim, aes(x = period, y = q_abs)) +
+      geom_line(color = "orange", size = 1.2) +
+      labs(title = "Câmbio Real Absoluto (índice)",
+           x = "Período", y = "Valor") +
+      theme_minimal(base_size = 14)
+    
+    (p1 / p2) / (p3 / p4 / p5)
   })
   
-  # Gráfico: PIB
-  output$plot_gdp <- renderPlot({
+  # Tabela resumo
+  output$table_head <- renderTable({
     req(sim_data())
-    sim <- sim_data()
-    
-    sim_long <- sim %>%
-      select(period, PIB_pot, PIB_abs) %>%
-      pivot_longer(cols = c(PIB_pot, PIB_abs), 
-                   names_to = "tipo", values_to = "valor")
-    
-    ggplot(sim_long, aes(x = period, y = valor, color = tipo)) +
-      geom_line(linewidth = 1.2) +
-      scale_color_manual(
-        values = c("PIB_pot" = "#3498db", "PIB_abs" = "#2c3e50"),
-        labels = c("PIB Potencial", "PIB Efetivo")
-      ) +
-      labs(title = "Projeção do PIB",
-           subtitle = "Comparação entre PIB efetivo e potencial",
-           x = "Período", y = "Nível do PIB") +
-      theme_qpm()
+    sim_data() %>% slice(1:12)
   })
-  
-  # Gráfico: Câmbio
-  output$plot_exchange <- renderPlot({
-    req(sim_data())
-    sim <- sim_data()
-    base <- isolate(input$q_base)
-    
-    ggplot(sim, aes(x = period, y = q_abs)) +
-      geom_hline(yintercept = base, linetype = "dashed", 
-                 color = "#95a5a6", linewidth = 0.8) +
-      geom_line(color = "#e67e22", linewidth = 1.3) +
-      geom_point(data = sim %>% filter(period %in% c(0, max(period))), 
-                 color = "#e67e22", size = 3) +
-      annotate("text", x = max(sim$period) * 0.85, y = base, 
-               label = paste0("Base: ", base), 
-               vjust = -0.5, color = "#7f8c8d", size = 3.5) +
-      labs(title = "Projeção do Câmbio Real",
-           subtitle = "Índice do câmbio real (valores maiores = depreciação)",
-           x = "Período", y = "Índice de Câmbio Real") +
-      theme_qpm()
-  })
-  
-  # Tabela de projeções
-  output$table_projections <- renderTable({
-    req(sim_data())
-    sim_data() %>% 
-      slice(1:12) %>%
-      select(period, pi, i, y, PIB_abs, q_abs) %>%
-      rename(
-        Período = period,
-        `Inflação (%)` = pi,
-        `Juros (%)` = i,
-        `Hiato (%)` = y,
-        `PIB` = PIB_abs,
-        `Câmbio Real` = q_abs
-      )
-  }, digits = 2, striped = TRUE, hover = TRUE, bordered = TRUE)
   
   # Download
   output$download <- downloadHandler(
