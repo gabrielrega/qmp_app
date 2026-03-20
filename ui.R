@@ -231,8 +231,8 @@ ui <- fluidPage(
           hr(),
           
           # Tabela de projeções
-          h4("📋 Tabela de Projeções (Primeiros 12 períodos)"),
-          tableOutput("table_projections")
+          h4("📋 Tabela de Projeções (Primeiros 16 períodos)"),
+          DT::DTOutput("table_projections")
         )
       )
     )

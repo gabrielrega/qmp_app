@@ -268,20 +268,32 @@ server <- function(input, output, session) {
   })
   
   # Tabela de projeções
-  output$table_projections <- renderTable({
+  output$table_projections <- DT::renderDT({
     req(sim_data())
-    sim_data() %>% 
-      slice(1:12) %>%
-      select(period, pi, i, y, PIB_abs, q_abs) %>%
+    df_table <- sim_data() %>% 
+      select(period, PIB_abs, g_qoq, g_yoy, pi, i, y) %>%
       rename(
         Período = period,
+        `PIB` = PIB_abs,
+        `Cresc. Trim (%)` = g_qoq,
+        `Cresc. Anual (%)` = g_yoy,
         `Inflação (%)` = pi,
         `Juros (%)` = i,
-        `Hiato (%)` = y,
-        `PIB` = PIB_abs,
-        `Câmbio Real` = q_abs
+        `Hiato (%)` = y
       )
-  }, digits = 2, striped = TRUE, hover = TRUE, bordered = TRUE)
+    
+    DT::datatable(
+      df_table,
+      rownames = FALSE,
+      options = list(
+        pageLength = 16,
+        dom = 'tip',
+        scrollX = TRUE,
+        columnDefs = list(list(className = 'dt-center', targets = "_all"))
+      )
+    ) %>%
+      DT::formatRound(columns = 2:7, digits = 2)
+  })
   
   # Download
   output$download <- downloadHandler(

@@ -60,11 +60,27 @@ simulate_qpm <- function(params, state0, T = 40,
   PIB_abs <- PIB_pot_ts * (1 + y/100)
   q_abs   <- q_base * (1 + q/100)
   
+  # Calcular crescimentos
+  g_qoq <- c(NA, diff(PIB_abs) / PIB_abs[-length(PIB_abs)] * 100)
+  
+  # YoY: Soma de 4 trimestres vs soma dos 4 anteriores
+  # (Acumulado 12 meses vs acumulado 12 meses anterior)
+  g_yoy <- rep(NA, T+1)
+  if (T >= 7) {
+    for (t in 8:(T+1)) {
+      sum_last_4 <- sum(PIB_abs[t:(t-3)])
+      sum_prev_4 <- sum(PIB_abs[(t-4):(t-7)])
+      g_yoy[t] <- (sum_last_4 / sum_prev_4 - 1) * 100
+    }
+  }
+  
   tibble(
     period     = 0:T,
     y          = y,
     PIB_pot    = PIB_pot_ts,
     PIB_abs    = PIB_abs,
+    g_qoq      = g_qoq,
+    g_yoy      = g_yoy,
     pi         = pi,
     i          = i,
     q          = q,
