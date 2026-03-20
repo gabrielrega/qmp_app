@@ -30,12 +30,15 @@ renv::restore()
 ### Running the App
 Execute the following command in your terminal:
 ```powershell
-Rscript.exe -e "shiny::runApp('qpm.R')"
+Rscript.exe -e "shiny::runApp('.')"
 ```
 *Note: The app is configured to run locally on http://127.0.0.1:4481 by default (as per README).*
 
 ## 📁 Key Files and Directories
-- `qpm.R`: The main application file containing both UI and Server logic.
+- `app.R`: Main entry point that connects UI and Server.
+- `ui.R`: User Interface layout and components.
+- `server.R`: Server-side logic and reactive computations.
+- `global.R`: Simulation engine and global data loading.
 - `presets/`:
     - `countries_parameters.csv`: Calibrated parameters for supported countries.
     - `PARAMETERS_GUIDE.md`: Technical documentation on parameters and equations.
