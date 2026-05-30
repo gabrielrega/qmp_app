@@ -13,7 +13,7 @@ The simulator includes:
 - **Language:** R
 - **Framework:** Shiny
 - **Data Manipulation:** `dplyr`, `tidyr`, `readr`
-- **Visualization:** `ggplot2`, `patchwork`
+- **Visualization:** `ggplot2`, `patchwork`, `DT` (interactive projections table)
 - **Dependency Management:** `renv`
 - **Styling:** Custom CSS (`www/petrobras.css`)
 
@@ -44,7 +44,8 @@ Rscript.exe -e "shiny::runApp('.')"
     - `PARAMETERS_GUIDE.md`: Technical documentation on parameters and equations.
     - `INTEGRATION_PROPOSAL.md`: Planned features and roadmap.
 - `www/petrobras.css`: Custom theme and styling.
-- `INSTRUCOES_REESTRUTURACAO.md`: Manual instructions for UI/Server code blocks (useful for refactoring).
+- `prototype/qpm_standalone.R`: Original standalone R script (pre-Shiny). Reference only — engine now lives in `global.R`.
+- `qpm_backup.R`: Backup of the previous monolithic app.
 - `renv.lock`: Locked versions of all R package dependencies.
 
 ## ⚖️ Development Conventions
@@ -54,5 +55,6 @@ Rscript.exe -e "shiny::runApp('.')"
 - **Testing:** New country calibrations should be validated against academic literature before being added to `countries_parameters.csv`.
 
 ## 🔄 Recent Updates
-- **v2.0 (Stable):** Re-structured dashboard with metric cards, individual charts, and integrated country presets.
+- **v2.1 (Stable):** Split monolithic `qpm.R` into the standard Shiny structure (`app.R` / `global.R` / `ui.R` / `server.R`); added QoQ/YoY GDP growth metrics; moved the projections table to `DT`; moved the original standalone script to `prototype/`.
+- **v2.0:** Re-structured dashboard with metric cards, individual charts, and integrated country presets.
 - **Presets Integration:** Added automatic loading of calibrated parameters for major economies.

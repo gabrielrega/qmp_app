@@ -44,11 +44,11 @@ Parâmetros calibrados baseados em literatura acadêmica para:
 
 ### Início Rápido
 
-1. **Execute o app**:
+1. **Execute o app** (a partir da raiz do projeto):
 ```powershell
-cd "g:\Meu Drive\_Projetos\qmp_app"
-& "C:\Program Files\R\R-4.4.1\bin\Rscript.exe" -e "shiny::runApp('qpm.R')"
+& "C:\Program Files\R\R-4.4.1\bin\Rscript.exe" -e "shiny::runApp('.')"
 ```
+> O Shiny carrega automaticamente `global.R`, `ui.R` e `server.R`; `app.R` é só o ponto de entrada.
 
 2. **Carregue um preset de país**:
    - Selecione um país no dropdown "🌍 Calibrações de Países"
@@ -81,9 +81,14 @@ cd "g:\Meu Drive\_Projetos\qmp_app"
 
 ```
 qmp_app/
-├── qpm.R                           # ⭐ App principal (versão oficial)
-├── qpm_old.R                       # Versão original (backup)
-├── qpm_backup.R                    # Backup adicional
+├── app.R                           # ⭐ Ponto de entrada — shinyApp(ui, server)
+├── global.R                        # Engine simulate_qpm() + carga dos presets
+├── ui.R                            # Interface (controles + dashboard)
+├── server.R                        # Lógica reativa, gráficos, métricas, download
+├── qpm_backup.R                    # Backup do app monolítico anterior
+├── prototype/                      # 🧪 Scripts exploratórios (fora da app)
+│   ├── qpm_standalone.R                  # Protótipo original em R puro
+│   └── README.md                         # Explicação da pasta
 ├── presets/                        # 🌍 Configurações de países
 │   ├── countries_parameters.csv          # Parâmetros calibrados
 │   ├── PARAMETERS_GUIDE.md               # Documentação técnica (7.5KB)
@@ -116,7 +121,7 @@ qmp_app/
 - **Gráfico de Hiato**: Zonas coloridas (aquecimento/desaquecimento)
 - **Gráfico de PIB**: Potencial vs Efetivo
 - **Gráfico de Câmbio**: Índice de câmbio real
-- **Tabela**: Primeiros 12 períodos com valores principais
+- **Tabela (DT)**: Projeções interativas com PIB, crescimento trimestral (QoQ) e anual (YoY), inflação, juros e hiato
 
 ---
 
@@ -163,6 +168,7 @@ Ver `presets/PARAMETERS_GUIDE.md` para detalhes completos.
 - `ggplot2` - Visualizações
 - `patchwork` - Composição de gráficos
 - `readr` - Leitura de CSVs
+- `DT` - Tabela de projeções interativa
 
 ### Instalação
 O projeto usa `renv` para gerenciamento de dependências:
@@ -212,7 +218,13 @@ Exemplo: Emergentes vs Avançados
 
 ## 🔄 Atualizações Recentes
 
-### v2.0 (18/Nov/2025) - ATUAL
+### v2.1 (Mai/2026) - ATUAL
+- ✅ App refatorada do `qpm.R` monolítico para a estrutura Shiny padrão (`app.R` / `global.R` / `ui.R` / `server.R`)
+- ✅ Métricas de crescimento do PIB trimestral (QoQ) e anual (YoY) na engine
+- ✅ Tabela de projeções migrada para `DT` (interativa, com paginação e scroll)
+- ✅ Protótipo standalone original movido para `prototype/`
+
+### v2.0 (18/Nov/2025)
 - ✅ Dashboard reestruturado com cards de métricas
 - ✅ Gráficos individuais maiores e mais detalhados
 - ✅ Tema visual customizado (theme_qpm)
@@ -290,7 +302,7 @@ Versão 2.0 - Novembro 2025
 
 ---
 
-**Desenvolvido com**: R + Shiny + ggplot2 + renv  
-**Última Atualização**: 18 de Novembro de 2025  
-**Versão**: 2.0 (Stable)  
+**Desenvolvido com**: R + Shiny + ggplot2 + DT + renv  
+**Última Atualização**: 29 de Maio de 2026  
+**Versão**: 2.1 (Stable)  
 **Status**: ✅ Produção
