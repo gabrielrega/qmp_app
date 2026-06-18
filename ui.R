@@ -229,10 +229,79 @@ ui <- fluidPage(
           ),
           
           hr(),
-          
+
           # Tabela de projeções
           h4("📋 Tabela de Projeções (Primeiros 16 períodos)"),
           DT::DTOutput("table_projections")
+        ),
+
+        tabPanel("Comparação de Países",
+          h3("🌍 Comparação de Respostas de Política Monetária"),
+          p("Cada país parte do seu próprio estado estacionário (hiato 0, inflação na meta,
+            juros na taxa neutra) e recebe o ", strong("mesmo choque"), ". As trajetórias
+            sobrepostas mostram como as diferenças estruturais (κ, ρ, απ, r*, etc.) afetam a
+            resposta. As expectativas usam o modo configurado na barra lateral."),
+
+          fluidRow(
+            column(4,
+              wellPanel(
+                style = "background-color: #f8f9fa; border-left: 4px solid #2c3e50;",
+                h4("Países", style = "margin-top: 0;"),
+                selectInput("compare_country1", "País 1:",
+                            choices = c("Brasil", "Chile", "Peru",
+                                        "Colombia", "Mexico", "EUA"),
+                            selected = "Brasil"),
+                selectInput("compare_country2", "País 2:",
+                            choices = c("Brasil", "Chile", "Peru",
+                                        "Colombia", "Mexico", "EUA"),
+                            selected = "Chile")
+              )
+            ),
+            column(4,
+              wellPanel(
+                style = "background-color: #fff4e6; border-left: 4px solid #e67e22;",
+                h4("Choque comum", style = "margin-top: 0;"),
+                selectInput("compare_shock_var", "Variável:",
+                            choices = c("Inflação (π)" = "pi",
+                                        "Hiato (y)"    = "y",
+                                        "Juros (i)"    = "i",
+                                        "Câmbio (q)"   = "q"),
+                            selected = "pi"),
+                numericInput("compare_shock_t", "Período do choque (1..T)", 5, 1, 240),
+                numericInput("compare_shock_v", "Valor (pp)", 2)
+              )
+            ),
+            column(4,
+              wellPanel(
+                style = "background-color: #e8f4f8; border-left: 4px solid #3498db;",
+                h4("Horizonte", style = "margin-top: 0;"),
+                numericInput("compare_T", "Períodos", 40, 1, 240, step = 1),
+                br(),
+                actionButton("compare_run", "Comparar países",
+                             class = "btn-primary btn-block"),
+                tags$small("Use os controles de expectativas da barra lateral.")
+              )
+            )
+          ),
+
+          hr(),
+
+          h4("📊 Trajetórias comparadas"),
+          fluidRow(
+            column(6, plotOutput("compare_plot_inflation", height = "350px")),
+            column(6, plotOutput("compare_plot_interest", height = "350px"))
+          ),
+          br(),
+          fluidRow(
+            column(6, plotOutput("compare_plot_output_gap", height = "350px")),
+            column(6, plotOutput("compare_plot_exchange", height = "350px"))
+          ),
+
+          hr(),
+
+          h4("📋 Diferenças de resposta"),
+          DT::DTOutput("compare_table"),
+          downloadButton("compare_download", "Baixar comparação CSV")
         )
       )
     )

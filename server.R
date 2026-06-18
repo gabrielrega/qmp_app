@@ -303,4 +303,125 @@ server <- function(input, output, session) {
       write_csv(sim_data(), file)
     }
   )
+
+  # ---------------------------
+  # Comparação entre países
+  # ---------------------------
+  compare_data <- eventReactive(input$compare_run, {
+    T  <- input$compare_T
+    c1 <- input$compare_country1
+    c2 <- input$compare_country2
+
+    cp1 <- countries_params %>% filter(country == c1)
+    cp2 <- countries_params %>% filter(country == c2)
+    validate(need(nrow(cp1) == 1 && nrow(cp2) == 1,
+                  "Selecione dois países válidos."))
+
+    # Choque comum (opcional)
+    shock <- list()
+    if (!is.na(input$compare_shock_t) && !is.na(input$compare_shock_v)) {
+      validate(need(input$compare_shock_t >= 1 && input$compare_shock_t <= T,
+                    "Período do choque deve estar entre 1 e T."))
+      shock[[input$compare_shock_var]] <- c(time  = input$compare_shock_t,
+                                            value = input$compare_shock_v)
+    }
+
+    sim1 <- run_country_sim(cp1, T = T, expectation = input$expectation,
+                            lambda = input$lambda, shock = shock)
+    sim2 <- run_country_sim(cp2, T = T, expectation = input$expectation,
+                            lambda = input$lambda, shock = shock)
+
+    # Rótulos únicos mesmo se os dois países forem iguais
+    lab1 <- c1
+    lab2 <- if (c2 == c1) paste0(c2, " (2)") else c2
+
+    combined <- bind_rows(
+      sim1 %>% mutate(country = lab1),
+      sim2 %>% mutate(country = lab2)
+    ) %>%
+      mutate(country = factor(country, levels = c(lab1, lab2)))
+
+    list(df = combined, labels = c(lab1, lab2))
+  }, ignoreInit = TRUE)
+
+  compare_palette <- function(labels) {
+    setNames(c("#2c3e50", "#e67e22"), labels)
+  }
+
+  compare_plot <- function(yvar, title, subtitle, ylab, hline = NULL) {
+    cd  <- compare_data()
+    pal <- compare_palette(cd$labels)
+    p <- ggplot(cd$df, aes(x = period, y = .data[[yvar]], color = country))
+    if (!is.null(hline)) {
+      p <- p + geom_hline(yintercept = hline, linetype = "dashed",
+                          color = "#95a5a6", linewidth = 0.7)
+    }
+    p +
+      geom_line(linewidth = 1.2) +
+      scale_color_manual(values = pal) +
+      labs(title = title, subtitle = subtitle, x = "Período", y = ylab) +
+      theme_qpm()
+  }
+
+  output$compare_plot_inflation <- renderPlot({
+    req(compare_data())
+    compare_plot("pi", "Inflação", "Resposta ao choque comum", "Inflação (%)")
+  })
+
+  output$compare_plot_interest <- renderPlot({
+    req(compare_data())
+    compare_plot("i", "Taxa de Juros Nominal", "Resposta ao choque comum", "Juros (%)")
+  })
+
+  output$compare_plot_output_gap <- renderPlot({
+    req(compare_data())
+    compare_plot("y", "Hiato do Produto", "Resposta ao choque comum",
+                 "Hiato (%)", hline = 0)
+  })
+
+  output$compare_plot_exchange <- renderPlot({
+    req(compare_data())
+    compare_plot("q_abs", "Câmbio Real", "Resposta ao choque comum",
+                 "Índice de Câmbio Real", hline = 100)
+  })
+
+  # Tabela de diferenças de resposta
+  output$compare_table <- DT::renderDT({
+    req(compare_data())
+    cd   <- compare_data()
+    labs <- cd$labels
+
+    summ <- cd$df %>%
+      group_by(country) %>%
+      summarise(
+        `Inflação final (%)`    = tail(pi, 1),
+        `Juros final (%)`       = tail(i, 1),
+        `Hiato médio 12 (%)`    = mean(tail(y, 12)),
+        `Câmbio final (índice)` = tail(q_abs, 1),
+        `Pico de inflação (%)`  = max(pi),
+        .groups = "drop"
+      )
+
+    metrics <- setdiff(names(summ), "country")
+    v1 <- as.numeric(summ[summ$country == labs[1], metrics])
+    v2 <- as.numeric(summ[summ$country == labs[2], metrics])
+
+    tab <- data.frame(metrics, v1, v2, v1 - v2, check.names = FALSE)
+    names(tab) <- c("Métrica", labs[1], labs[2], "Diferença (1−2)")
+
+    DT::datatable(
+      tab, rownames = FALSE,
+      options = list(dom = 't',
+                     columnDefs = list(list(className = 'dt-center', targets = "_all")))
+    ) %>%
+      DT::formatRound(columns = 2:4, digits = 2)
+  })
+
+  output$compare_download <- downloadHandler(
+    filename = function() paste0("qpm_comparacao_", Sys.Date(), ".csv"),
+    content = function(file) {
+      req(compare_data())
+      write_csv(compare_data()$df, file)
+    }
+  )
 }

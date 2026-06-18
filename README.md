@@ -38,6 +38,12 @@ Parâmetros calibrados baseados em literatura acadêmica para:
 - Diferentes modos de formação de expectativas
 - Horizonte de simulação configurável
 
+### 5. **Comparação entre Países** 🆚
+- Aba dedicada que sobrepõe as trajetórias de dois países sob um **choque comum**
+- Cada economia parte do seu próprio estado estacionário (isola diferenças estruturais)
+- Gráficos sobrepostos de inflação, juros, hiato e câmbio
+- Tabela de diferenças de resposta + download em CSV
+
 ---
 
 ## 🚀 Como Usar
@@ -250,7 +256,7 @@ Exemplo: Emergentes vs Avançados
 - [ ] Criar quick-start guide interativo
 
 **Médio Prazo**
-- [ ] Aba de comparação lado a lado (2 países)
+- [x] Aba de comparação de 2 países (choque comum, trajetórias sobrepostas)
 - [ ] Séries históricas reais de PIB potencial
 - [ ] Export de gráficos em alta resolução
 

@@ -89,6 +89,41 @@ simulate_qpm <- function(params, state0, T = 40,
 }
 
 # ---------------------------
+# Helper para comparação entre países
+# ---------------------------
+# Roda uma simulação para um país a partir do seu próprio estado estacionário
+# (hiato 0, inflação na meta, juros na taxa neutra, câmbio na base), de modo a
+# isolar as diferenças estruturais da resposta a um choque comum.
+run_country_sim <- function(cparams, T = 40,
+                            expectation = "hybrid", lambda = 0.6,
+                            shock = list(),
+                            PIB_base = 1000, PIB_growth = 0, q_base = 100) {
+  params <- list(
+    beta = cparams$beta, kappa = cparams$kappa, phi = cparams$phi,
+    gamma = cparams$gamma, rho = cparams$rho, alpha_pi = cparams$alpha_pi,
+    alpha_y = cparams$alpha_y, r_star = cparams$r_star,
+    pi_star = cparams$pi_star, psi = cparams$psi, theta = cparams$theta
+  )
+
+  # Estado inicial = estado estacionário do próprio país
+  state0 <- c(
+    y  = 0,
+    pi = params$pi_star,
+    i  = params$r_star + params$pi_star,
+    q  = 0
+  )
+
+  PIB_pot_ts <- PIB_base * (1 + PIB_growth)^(0:T)
+
+  simulate_qpm(
+    params = params, state0 = state0, T = T,
+    expectation = expectation, lambda = lambda,
+    shocks = shock, PIB_pot_ts = PIB_pot_ts,
+    PIB_base = PIB_base, q_base = q_base
+  )
+}
+
+# ---------------------------
 # Global Data Loading
 # ---------------------------
 preset_path <- "presets/countries_parameters.csv"

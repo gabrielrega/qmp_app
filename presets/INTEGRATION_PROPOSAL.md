@@ -3,9 +3,10 @@
 > **Status (jun/2026):** Fases 1 e 2 **concluídas** e em produção desde a v2.0.
 > O seletor de presets está integrado na estrutura Shiny modular
 > (`global.R` / `ui.R` / `server.R`), não mais no antigo `qpm_v2.R`.
-> A Fase 3 (aba de comparação de países) segue como roadmap de médio prazo.
-> Veja o estado consolidado em [`../CHANGELOG.md`](../CHANGELOG.md) e o
-> roadmap atual no [`../README.md`](../README.md).
+> A Fase 3 (aba de comparação de países) também já foi **entregue** — ver a aba
+> "Comparação de Países" no app. Veja o estado consolidado em
+> [`../CHANGELOG.md`](../CHANGELOG.md) e o roadmap atual no
+> [`../README.md`](../README.md).
 
 ## 📋 Visão Geral
 
@@ -202,10 +203,10 @@ scenarios <- tibble(
 
 ---
 
-### Fase 3 (Opcional): Comparação de Países — ⏳ ROADMAP (médio prazo)
-1. Implementar aba de comparação (Opção 2)
-2. Gráficos sobrepostos
-3. Tabela de diferenças de resposta
+### Fase 3 (Opcional): Comparação de Países — ✅ CONCLUÍDA
+1. ✅ Implementar aba de comparação (Opção 2)
+2. ✅ Gráficos sobrepostos (em vez de lado a lado, para leitura direta)
+3. ✅ Tabela de diferenças de resposta (+ download CSV)
 
 **Esforço**: Médio-Alto (4-6 horas)  
 **Impacto**: Alto (muito útil para análise)
@@ -305,7 +306,7 @@ Ver `PARAMETERS_GUIDE.md` para referências completas.
 3. ✅ **CONCLUÍDO**: Testado com os 6 presets disponíveis
 4. ✅ **CONCLUÍDO**: App promovida e refatorada para a estrutura Shiny modular (v2.1)
 5. ✅ **CONCLUÍDO**: Commitado e documentado no README e no CHANGELOG
-6. ⏳ **PENDENTE**: Aba de comparação de países (Opção 2 / Fase 3)
+6. ✅ **CONCLUÍDO**: Aba de comparação de países (Opção 2 / Fase 3)
 7. ⏳ **PENDENTE**: Cenários históricos pré-configurados (Opção 3)
 
 ---

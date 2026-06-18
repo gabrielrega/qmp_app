@@ -5,6 +5,13 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/);
 versionamento conforme [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+### Adicionado
+- Aba "Comparação de Países": sobrepõe as trajetórias de dois países num choque
+  comum (inflação, juros, hiato e câmbio), com tabela de diferenças de resposta e
+  download em CSV. Cada economia parte do seu próprio estado estacionário, isolando
+  as diferenças estruturais.
+- Helper `run_country_sim()` na engine para simular um país a partir dos seus
+  parâmetros calibrados e estado estacionário.
 
 ## [2.1.0] - 2026-05-29
 ### Modificado
