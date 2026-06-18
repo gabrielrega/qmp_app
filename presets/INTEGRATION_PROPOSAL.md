@@ -1,5 +1,12 @@
 # Proposta de Integração de Presets de Países no QPM
 
+> **Status (jun/2026):** Fases 1 e 2 **concluídas** e em produção desde a v2.0.
+> O seletor de presets está integrado na estrutura Shiny modular
+> (`global.R` / `ui.R` / `server.R`), não mais no antigo `qpm_v2.R`.
+> A Fase 3 (aba de comparação de países) segue como roadmap de médio prazo.
+> Veja o estado consolidado em [`../CHANGELOG.md`](../CHANGELOG.md) e o
+> roadmap atual no [`../README.md`](../README.md).
+
 ## 📋 Visão Geral
 
 Esta proposta detalha como integrar configurações pré-calibradas de países no simulador QPM, permitindo aos usuários iniciar análises com parâmetros academicamente fundamentados para diferentes economias.
@@ -174,28 +181,28 @@ scenarios <- tibble(
 
 ## 🚀 Recomendação de Implementação
 
-### Fase 1: Seletor Simples (Opção 1) - IMEDIATO
-1. Adicionar `wellPanel` com seletor de países
-2. Implementar `observeEvent` para carregar parâmetros
-3. Adicionar notificação visual de confirmação
-4. Documentar no guia de instruções
+### Fase 1: Seletor Simples (Opção 1) — ✅ CONCLUÍDA (v2.0)
+1. ✅ Adicionar `wellPanel` com seletor de países
+2. ✅ Implementar `observeEvent` para carregar parâmetros
+3. ✅ Adicionar notificação visual de confirmação
+4. ✅ Documentar no guia de instruções
 
 **Esforço**: Baixo (1-2 horas)  
 **Impacto**: Alto (facilita muito o uso)
 
 ---
 
-### Fase 2: Documentação Expandida - CURTO PRAZO
-1. Adicionar seção "Calibrações de Países" na aba Instruções
-2. Link para `PARAMETERS_GUIDE.md`
-3. Explicar diferenças entre economias
+### Fase 2: Documentação Expandida — ✅ CONCLUÍDA (v2.0)
+1. ✅ Adicionar seção "Calibrações de Países" na aba Instruções
+2. ✅ Link para `PARAMETERS_GUIDE.md`
+3. ✅ Explicar diferenças entre economias
 
 **Esforço**: Baixo (30 min)  
 **Impacto**: Médio (contexto educacional)
 
 ---
 
-### Fase 3 (Opcional): Comparação de Países - MÉDIO PRAZO
+### Fase 3 (Opcional): Comparação de Países — ⏳ ROADMAP (médio prazo)
 1. Implementar aba de comparação (Opção 2)
 2. Gráficos sobrepostos
 3. Tabela de diferenças de resposta
@@ -209,11 +216,14 @@ scenarios <- tibble(
 
 ```
 qmp_app/
-├── qpm_v2.R                    # App principal (será qpm.R)
+├── app.R                       # ✅ Ponto de entrada — shinyApp(ui, server)
+├── global.R                    # ✅ Engine + carga dos presets de países
+├── ui.R                        # ✅ Interface, inclui o seletor de presets
+├── server.R                    # ✅ observeEvent que carrega os parâmetros
 ├── presets/
 │   ├── countries_parameters.csv           # ✅ CRIADO
 │   ├── PARAMETERS_GUIDE.md                # ✅ CRIADO
-│   └── scenarios/                         # Futuro
+│   └── scenarios/                         # Futuro (Opção 3)
 │       ├── brasil_commodities_2022.csv
 │       └── chile_post_pandemic.csv
 ├── www/
@@ -291,10 +301,12 @@ Ver `PARAMETERS_GUIDE.md` para referências completas.
 ## 📝 Próximos Passos
 
 1. ✅ **CONCLUÍDO**: Arquivos CSV e documentação criados
-2. ⏳ **PENDENTE**: Integrar seletor no qpm_v2.R
-3. ⏳ **PENDENTE**: Testar com diferentes presets
-4. ⏳ **PENDENTE**: Promover qpm_v2.R como qpm.R oficial
-5. ⏳ **PENDENTE**: Commit e documentar no README
+2. ✅ **CONCLUÍDO**: Seletor de presets integrado (hoje em `ui.R` / `server.R`)
+3. ✅ **CONCLUÍDO**: Testado com os 6 presets disponíveis
+4. ✅ **CONCLUÍDO**: App promovida e refatorada para a estrutura Shiny modular (v2.1)
+5. ✅ **CONCLUÍDO**: Commitado e documentado no README e no CHANGELOG
+6. ⏳ **PENDENTE**: Aba de comparação de países (Opção 2 / Fase 3)
+7. ⏳ **PENDENTE**: Cenários históricos pré-configurados (Opção 3)
 
 ---
 
