@@ -233,7 +233,12 @@ Exemplo: Emergentes vs Avançados
 
 ## 🔄 Atualizações Recentes
 
-### v2.1 (Mai/2026) - ATUAL
+### v2.2 (Jun/2026) - ATUAL
+- ✅ Aba de comparação de 2 países (choque comum, trajetórias sobrepostas)
+- ✅ Aba de IRFs (funções de resposta a impulso)
+- ✅ Export de gráficos em alta resolução (PNG/PDF)
+
+### v2.1 (Mai/2026)
 - ✅ App refatorada do `qpm.R` monolítico para a estrutura Shiny padrão (`app.R` / `global.R` / `ui.R` / `server.R`)
 - ✅ Métricas de crescimento do PIB trimestral (QoQ) e anual (YoY) na engine
 - ✅ Tabela de projeções migrada para `DT` (interativa, com paginação e scroll)
@@ -317,7 +322,7 @@ Versão 2.0 - Novembro 2025
 
 ---
 
-**Desenvolvido com**: R + Shiny + ggplot2 + DT + renv  
-**Última Atualização**: 29 de Maio de 2026  
-**Versão**: 2.1 (Stable)  
+**Desenvolvido com**: R + Shiny + ggplot2 + patchwork + DT + renv  
+**Última Atualização**: 18 de Junho de 2026  
+**Versão**: 2.2 (Stable)  
 **Status**: ✅ Produção

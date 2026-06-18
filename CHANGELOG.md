@@ -5,6 +5,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/);
 versionamento conforme [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+
+## [2.2.0] - 2026-06-18
 ### Adicionado
 - Aba "Comparação de Países": sobrepõe as trajetórias de dois países num choque
   comum (inflação, juros, hiato e câmbio), com tabela de diferenças de resposta e
