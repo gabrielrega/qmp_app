@@ -1,4 +1,26 @@
 # ui.R - User Interface for QPM Simulator
+
+# Controles reutilizáveis de export de gráficos (PNG/PDF em alta resolução).
+# `prefix` nomeia os inputs ({prefix}_fmt, _w, _h, _dpi) e o downloadButton.
+# Com `choices`, inclui um seletor {prefix}_which; sem ele, exporta o painel.
+export_controls <- function(prefix, choices = NULL) {
+  cols <- list()
+  if (!is.null(choices)) {
+    cols <- c(cols, list(
+      column(3, selectInput(paste0(prefix, "_which"), "Gráfico", choices = choices))
+    ))
+  }
+  cols <- c(cols, list(
+    column(2, radioButtons(paste0(prefix, "_fmt"), "Formato",
+                           c("PNG" = "png", "PDF" = "pdf"), inline = TRUE)),
+    column(2, numericInput(paste0(prefix, "_w"), "Largura (in)", 10, 3, 40)),
+    column(2, numericInput(paste0(prefix, "_h"), "Altura (in)", 6, 3, 40)),
+    column(2, numericInput(paste0(prefix, "_dpi"), "DPI (PNG)", 300, 72, 600)),
+    column(1, tags$br(), downloadButton(prefix, "Baixar"))
+  ))
+  do.call(fluidRow, cols)
+}
+
 ui <- fluidPage(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "petrobras.css")
@@ -232,7 +254,18 @@ ui <- fluidPage(
 
           # Tabela de projeções
           h4("📋 Tabela de Projeções (Primeiros 16 períodos)"),
-          DT::DTOutput("table_projections")
+          DT::DTOutput("table_projections"),
+
+          hr(),
+          h4("📥 Exportar gráficos (alta resolução)"),
+          export_controls("sim_export", choices = c(
+            "Inflação"        = "inflation",
+            "Juros"           = "interest",
+            "Hiato"           = "output_gap",
+            "PIB"             = "gdp",
+            "Câmbio"          = "exchange",
+            "Painel completo" = "panel"
+          ))
         ),
 
         tabPanel("Comparação de Países",
@@ -301,7 +334,86 @@ ui <- fluidPage(
 
           h4("📋 Diferenças de resposta"),
           DT::DTOutput("compare_table"),
-          downloadButton("compare_download", "Baixar comparação CSV")
+          downloadButton("compare_download", "Baixar comparação CSV"),
+
+          hr(),
+          h4("📥 Exportar gráficos (alta resolução)"),
+          export_controls("cmp_export", choices = c(
+            "Inflação"        = "inflation",
+            "Juros"           = "interest",
+            "Hiato"           = "output_gap",
+            "Câmbio"          = "exchange",
+            "Painel completo" = "panel"
+          ))
+        ),
+
+        tabPanel("IRFs",
+          h3("📉 Funções de Resposta a Impulso (IRFs)"),
+          p("Mostra a resposta dinâmica de cada variável a um ", strong("choque único"),
+            ", medida como desvio do estado estacionário. Útil para visualizar a
+            transmissão e a velocidade de convergência. As expectativas usam o modo
+            configurado na barra lateral."),
+
+          fluidRow(
+            column(4,
+              wellPanel(
+                style = "background-color: #f8f9fa; border-left: 4px solid #2c3e50;",
+                h4("País / calibração", style = "margin-top: 0;"),
+                selectInput("irf_country", "Parâmetros:",
+                            choices = c(
+                              "Personalizado (barra lateral)" = "custom",
+                              "Brasil"   = "Brasil",
+                              "Chile"    = "Chile",
+                              "Peru"     = "Peru",
+                              "Colombia" = "Colombia",
+                              "Mexico"   = "Mexico",
+                              "EUA"      = "EUA"
+                            ),
+                            selected = "Brasil")
+              )
+            ),
+            column(4,
+              wellPanel(
+                style = "background-color: #fff4e6; border-left: 4px solid #e67e22;",
+                h4("Choque", style = "margin-top: 0;"),
+                selectInput("irf_shock_var", "Variável:",
+                            choices = c("Inflação (π)" = "pi",
+                                        "Hiato (y)"    = "y",
+                                        "Juros (i)"    = "i",
+                                        "Câmbio (q)"   = "q"),
+                            selected = "pi"),
+                numericInput("irf_shock_size", "Tamanho do choque (pp)", 1)
+              )
+            ),
+            column(4,
+              wellPanel(
+                style = "background-color: #e8f4f8; border-left: 4px solid #3498db;",
+                h4("Horizonte", style = "margin-top: 0;"),
+                numericInput("irf_T", "Períodos", 24, 1, 240, step = 1),
+                br(),
+                actionButton("irf_run", "Calcular IRF", class = "btn-primary btn-block")
+              )
+            )
+          ),
+
+          hr(),
+
+          h4("📊 Respostas (desvio do estado estacionário)"),
+          fluidRow(
+            column(6, plotOutput("irf_plot_pi", height = "320px")),
+            column(6, plotOutput("irf_plot_i", height = "320px"))
+          ),
+          br(),
+          fluidRow(
+            column(6, plotOutput("irf_plot_y", height = "320px")),
+            column(6, plotOutput("irf_plot_q", height = "320px"))
+          ),
+
+          hr(),
+          downloadButton("irf_download", "Baixar IRF CSV"),
+          br(), br(),
+          h4("📥 Exportar painel de IRFs (alta resolução)"),
+          export_controls("irf_export")
         )
       )
     )

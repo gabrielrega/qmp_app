@@ -44,6 +44,15 @@ Parâmetros calibrados baseados em literatura acadêmica para:
 - Gráficos sobrepostos de inflação, juros, hiato e câmbio
 - Tabela de diferenças de resposta + download em CSV
 
+### 6. **Funções de Resposta a Impulso (IRFs)** 📉
+- Aba dedicada à resposta dinâmica de cada variável a um choque único
+- Medida como desvio do estado estacionário, por país preset ou parâmetros customizados
+- Download dos dados da IRF em CSV
+
+### 7. **Export de Gráficos em Alta Resolução** 📥
+- Botões de download de PNG/PDF nas abas Simulação, Comparação e IRFs
+- Largura, altura e DPI configuráveis; opção de exportar o painel completo
+
 ---
 
 ## 🚀 Como Usar
@@ -258,11 +267,11 @@ Exemplo: Emergentes vs Avançados
 **Médio Prazo**
 - [x] Aba de comparação de 2 países (choque comum, trajetórias sobrepostas)
 - [ ] Séries históricas reais de PIB potencial
-- [ ] Export de gráficos em alta resolução
+- [x] Export de gráficos em alta resolução (PNG/PDF)
 
 **Longo Prazo**
 - [ ] Biblioteca de cenários históricos (crises)
-- [ ] Análise de IRFs (Impulse Response Functions)
+- [x] Análise de IRFs (Impulse Response Functions)
 - [ ] Interface multilíngue (PT/EN/ES)
 
 ### Contribuindo

@@ -12,6 +12,11 @@ versionamento conforme [SemVer](https://semver.org/lang/pt-BR/).
   as diferenças estruturais.
 - Helper `run_country_sim()` na engine para simular um país a partir dos seus
   parâmetros calibrados e estado estacionário.
+- Aba "IRFs": funções de resposta a impulso que mostram a resposta dinâmica de
+  cada variável (como desvio do estado estacionário) a um choque único, por país
+  preset ou parâmetros personalizados; com download em CSV.
+- Export de gráficos em alta resolução (PNG/PDF, com largura/altura/DPI
+  configuráveis) nas abas Simulação, Comparação e IRFs, incluindo painel completo.
 
 ## [2.1.0] - 2026-05-29
 ### Modificado
