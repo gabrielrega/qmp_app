@@ -5,6 +5,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/);
 versionamento conforme [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+
+## [2.3.0] - 2026-06-19
 ### Modificado
 - Roadmap consolidado no `README.md` como fonte única, com os checkboxes
   refletindo o que já foi entregue (comparação, export, IRFs) e apenas as

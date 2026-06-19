@@ -232,7 +232,12 @@ Exemplo: Emergentes vs Avançados
 
 ## 🔄 Atualizações Recentes
 
-### v2.2 (Jun/2026) - ATUAL
+### v2.3 (Jun/2026) - ATUAL
+- ✅ Triagem de TODOs e roadmap consolidado no README como fonte única
+- ✅ Limpeza de docs defasados (`presets/README`, `INTEGRATION_PROPOSAL`)
+- ✅ Remoção do `qpm_backup.R` (monólito pré-v2.1)
+
+### v2.2 (Jun/2026)
 - ✅ Aba de comparação de 2 países (choque comum, trajetórias sobrepostas)
 - ✅ Aba de IRFs (funções de resposta a impulso)
 - ✅ Export de gráficos em alta resolução (PNG/PDF)
@@ -322,5 +327,5 @@ Versão 2.2 - Junho 2026
 
 **Desenvolvido com**: R + Shiny + ggplot2 + patchwork + DT + renv  
 **Última Atualização**: 19 de Junho de 2026  
-**Versão**: 2.2 (Stable)  
+**Versão**: 2.3.0 (Stable)  
 **Status**: ✅ Produção
