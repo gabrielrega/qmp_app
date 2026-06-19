@@ -45,7 +45,6 @@ Rscript.exe -e "shiny::runApp('.')"
     - `INTEGRATION_PROPOSAL.md`: Planned features and roadmap.
 - `www/petrobras.css`: Custom theme and styling.
 - `prototype/qpm_standalone.R`: Original standalone R script (pre-Shiny). Reference only — engine now lives in `global.R`.
-- `qpm_backup.R`: Backup of the previous monolithic app.
 - `renv.lock`: Locked versions of all R package dependencies.
 
 ## ⚖️ Development Conventions

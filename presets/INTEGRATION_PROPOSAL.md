@@ -307,7 +307,7 @@ Ver `PARAMETERS_GUIDE.md` para referências completas.
 4. ✅ **CONCLUÍDO**: App promovida e refatorada para a estrutura Shiny modular (v2.1)
 5. ✅ **CONCLUÍDO**: Commitado e documentado no README e no CHANGELOG
 6. ✅ **CONCLUÍDO**: Aba de comparação de países (Opção 2 / Fase 3)
-7. ⏳ **PENDENTE**: Cenários históricos pré-configurados (Opção 3)
+7. ⏳ **Em aberto**: Cenários históricos pré-configurados (Opção 3) — acompanhado no roadmap consolidado em [`../README.md`](../README.md)
 
 ---
 

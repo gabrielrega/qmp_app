@@ -70,18 +70,13 @@ Série exemplo de PIB potencial crescendo 0.5% por trimestre
 
 ## 🚀 Como Usar
 
-### Opção Atual (Manual)
-1. Abra `presets/countries_parameters.csv`
-2. Copie os valores do país desejado
-3. Cole manualmente nos campos do simulador
-4. Rode a simulação
-
-### Opção Futura (Automatizada) - RECOMENDADA
-Após implementar a integração:
-1. Selecione o país no dropdown
+No app, na barra lateral:
+1. Selecione o país no dropdown "🌍 Calibrações de Países"
 2. Clique em "Carregar Preset"
 3. Todos os parâmetros são preenchidos automaticamente
 4. Rode a simulação
+
+> Para usar os valores fora do app, abra `countries_parameters.csv` diretamente.
 
 ---
 
@@ -101,30 +96,13 @@ Após implementar a integração:
 
 ---
 
-## 🔮 Roadmap de Desenvolvimento
+## 🔮 Roadmap
 
-### ✅ Fase 0: Pesquisa e Documentação (CONCLUÍDA)
-- [x] Pesquisa de parâmetros na literatura
-- [x] Criação de CSV com parâmetros
-- [x] Documentação técnica completa
-- [x] Proposta de integração
-
-### ⏳ Fase 1: Integração Básica (PRÓXIMO)
-- [ ] Implementar seletor de países no qpm_v2.R
-- [ ] Função de carregamento automático
-- [ ] Notificações visuais
-- [ ] Testar com todos os presets
-
-### ⏳ Fase 2: Promoção para Oficial
-- [ ] Renomear qpm_v2.R para qpm.R
-- [ ] Atualizar README principal
-- [ ] Criar tutorial de uso dos presets
-
-### 💡 Fase 3 (Opcional): Features Avançadas
-- [ ] Aba de comparação de países
-- [ ] Séries temporais reais de PIB
-- [ ] Cenários históricos (crises, choques)
-- [ ] Export de comparações
+A integração dos presets no app está **concluída**: seletor + carregamento
+automático + notificações desde a v2.0, e aba de comparação de países + IRFs na
+v2.2. O roadmap consolidado e as pendências em aberto vivem no
+[`../README.md`](../README.md); o histórico de versões, no
+[`../CHANGELOG.md`](../CHANGELOG.md).
 
 ---
 
@@ -176,6 +154,5 @@ Para dúvidas sobre:
 
 ---
 
-**Última Atualização**: 18 de Novembro de 2025  
-**Versão**: 1.0  
-**Status**: Pesquisa concluída | Aguardando integração no app
+**Última Atualização**: 19 de Junho de 2026  
+**Status**: Presets integrados no app (v2.0+); roadmap consolidado no README raiz

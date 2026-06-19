@@ -100,7 +100,6 @@ qmp_app/
 ├── global.R                        # Engine simulate_qpm() + carga dos presets
 ├── ui.R                            # Interface (controles + dashboard)
 ├── server.R                        # Lógica reativa, gráficos, métricas, download
-├── qpm_backup.R                    # Backup do app monolítico anterior
 ├── prototype/                      # 🧪 Scripts exploratórios (fora da app)
 │   ├── qpm_standalone.R                  # Protótipo original em R puro
 │   └── README.md                         # Explicação da pasta
@@ -264,19 +263,18 @@ Exemplo: Emergentes vs Avançados
 
 ### Roadmap Futuro
 
-**Curto Prazo**
-- [ ] Expandir instruções com exemplos de presets
-- [ ] Adicionar tooltips nos parâmetros
-- [ ] Criar quick-start guide interativo
+Itens já entregues (aba de comparação de países, export PNG/PDF, aba de IRFs)
+estão registrados no [`CHANGELOG.md`](CHANGELOG.md). Pendências em aberto:
 
-**Médio Prazo**
-- [x] Aba de comparação de 2 países (choque comum, trajetórias sobrepostas)
-- [ ] Séries históricas reais de PIB potencial
-- [x] Export de gráficos em alta resolução (PNG/PDF)
+**Conteúdo / dados**
+- [ ] Séries históricas reais de PIB potencial (CSVs OECD/FMI por país)
+- [ ] Biblioteca de cenários históricos pré-configurados (crises)
 
-**Longo Prazo**
-- [ ] Biblioteca de cenários históricos (crises)
-- [x] Análise de IRFs (Impulse Response Functions)
+**UX**
+- [ ] Tooltips nos parâmetros e exemplos de preset na aba Instruções
+- [ ] Quick-start guide interativo
+
+**Internacionalização**
 - [ ] Interface multilíngue (PT/EN/ES)
 
 ### Contribuindo
@@ -317,12 +315,12 @@ Este simulador é uma ferramenta **educacional e demonstrativa**. Não substitui
 ```
 Simulador QPM - Quarterly Projection Model
 Baseado em Berg, Karam & Laxton (2006) e literatura subsequente
-Versão 2.0 - Novembro 2025
+Versão 2.2 - Junho 2026
 ```
 
 ---
 
 **Desenvolvido com**: R + Shiny + ggplot2 + patchwork + DT + renv  
-**Última Atualização**: 18 de Junho de 2026  
+**Última Atualização**: 19 de Junho de 2026  
 **Versão**: 2.2 (Stable)  
 **Status**: ✅ Produção

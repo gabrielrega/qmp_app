@@ -5,6 +5,19 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/);
 versionamento conforme [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+### Modificado
+- Roadmap consolidado no `README.md` como fonte única, com os checkboxes
+  refletindo o que já foi entregue (comparação, export, IRFs) e apenas as
+  pendências reais em aberto.
+- `presets/README.md` atualizado: seção "Como Usar" e roadmap reescritos para o
+  estado atual (presets já integrados), removendo o checklist defasado que
+  referenciava o antigo `qpm_v2.R`; datas e status corrigidos.
+- `presets/INTEGRATION_PROPOSAL.md` aponta para o roadmap consolidado em vez de
+  re-rastrear pendências; citação/versão defasada do `README.md` corrigida.
+
+### Removido
+- `qpm_backup.R` (monólito pré-v2.1), superado pela estrutura modular
+  (`app.R` / `global.R` / `ui.R` / `server.R`) e preservado no histórico git.
 
 ## [2.2.0] - 2026-06-18
 ### Adicionado
