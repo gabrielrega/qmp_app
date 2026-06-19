@@ -4,7 +4,8 @@
 
 Aplicação Shiny interativa para simulação de modelos QPM (Quarterly Projection Model), amplamente utilizados por bancos centrais para análise de política monetária e construção de cenários macroeconômicos.
 
-**Servidor ativo**: http://127.0.0.1:4481
+**App online**: https://gabrielrega.shinyapps.io/qmp_app/ (deploy no shinyapps.io)
+**Execução local**: `http://127.0.0.1:4481` ao rodar `shiny::runApp()`
 
 ---
 
