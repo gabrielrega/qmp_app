@@ -54,6 +54,7 @@ Rscript.exe -e "shiny::runApp('.')"
 - **Testing:** New country calibrations should be validated against academic literature before being added to `countries_parameters.csv`.
 
 ## 🔄 Recent Updates
-- **v2.1 (Stable):** Split monolithic `qpm.R` into the standard Shiny structure (`app.R` / `global.R` / `ui.R` / `server.R`); added QoQ/YoY GDP growth metrics; moved the projections table to `DT`; moved the original standalone script to `prototype/`.
+- **v2.3 (Stable):** Roadmap consolidated in README; v2.2 added Country Comparison tab, IRFs tab and high-res PNG/PDF chart export; qpm_backup.R removed (see CHANGELOG.md).
+- **v2.1:** Split monolithic `qpm.R` into the standard Shiny structure (`app.R` / `global.R` / `ui.R` / `server.R`); added QoQ/YoY GDP growth metrics; moved the projections table to `DT`; moved the original standalone script to `prototype/`.
 - **v2.0:** Re-structured dashboard with metric cards, individual charts, and integrated country presets.
 - **Presets Integration:** Added automatic loading of calibrated parameters for major economies.

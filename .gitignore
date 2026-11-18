@@ -30,3 +30,13 @@ Thumbs.db
 *~
 *.swp
 *.swo
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Data dumps
+data/
+*.rds
+*.RData
